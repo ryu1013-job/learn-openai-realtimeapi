@@ -1,20 +1,20 @@
-"use client"
+'use client'
 
+import type { TextFieldProps as TextFieldPrimitiveProps, ValidationResult } from 'react-aria-components'
+import { Description, FieldError, Label } from '🍥/components/ui/field'
+
+import { composeTailwindRenderProps, focusStyles } from '🍥/lib/primitive'
 import {
+  composeRenderProps,
   TextArea as TextAreaPrimitive,
   TextField as TextFieldPrimitive,
-  type TextFieldProps as TextFieldPrimitiveProps,
-  type ValidationResult,
-  composeRenderProps,
-} from "react-aria-components"
-import { tv } from "tailwind-variants"
 
-import { Description, FieldError, Label } from "🍥/components/ui/field"
-import { composeTailwindRenderProps, focusStyles } from "🍥/lib/primitive"
+} from 'react-aria-components'
+import { tv } from 'tailwind-variants'
 
 const textareaStyles = tv({
   extend: focusStyles,
-  base: "field-sizing-content max-h-96 min-h-16 w-full min-w-0 rounded-lg border border-input px-2.5 py-2 text-base placeholder-muted-fg shadow-xs outline-hidden transition duration-200 disabled:opacity-50 sm:text-sm",
+  base: 'field-sizing-content max-h-96 min-h-16 w-full min-w-0 rounded-lg border border-input px-2.5 py-2 text-base placeholder-muted-fg shadow-xs outline-hidden transition duration-200 disabled:opacity-50 sm:text-sm',
 })
 
 interface TextareaProps extends TextFieldPrimitiveProps {
@@ -26,18 +26,18 @@ interface TextareaProps extends TextFieldPrimitiveProps {
   className?: string
 }
 
-const Textarea = ({
+function Textarea({
   className,
   placeholder,
   label,
   description,
   errorMessage,
   ...props
-}: TextareaProps) => {
+}: TextareaProps) {
   return (
     <TextFieldPrimitive
       {...props}
-      className={composeTailwindRenderProps(className, "group flex flex-col gap-y-1.5")}
+      className={composeTailwindRenderProps(className, 'group flex flex-col gap-y-1.5')}
     >
       {label && <Label>{label}</Label>}
       <TextAreaPrimitive
@@ -46,8 +46,7 @@ const Textarea = ({
           textareaStyles({
             ...renderProps,
             className,
-          }),
-        )}
+          }))}
       />
       {description && <Description>{description}</Description>}
       <FieldError>{errorMessage}</FieldError>

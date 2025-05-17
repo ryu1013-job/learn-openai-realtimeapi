@@ -1,15 +1,16 @@
-"use client"
+/* eslint-disable unused-imports/no-unused-vars */
+'use client'
 
-import Image from "next/image";
-import { useState } from "react";
-import { Badge } from "🍥/components/ui/badge";
-import { Button } from "🍥/components/ui/button";
-import { Heading } from "🍥/components/ui/heading";
-import useWebRTCAudioSession from "🍥/hooks/use-webrtc";
+import { Badge } from '🍥/components/ui/badge'
+import { Button } from '🍥/components/ui/button'
+import { Heading } from '🍥/components/ui/heading'
+import useWebRTCAudioSession from '🍥/hooks/use-webrtc'
+import Image from 'next/image'
+import { useState } from 'react'
 
 export default function Home() {
   // State for voice selection
-  const [voice, setVoice] = useState("ash")
+  const [voice, setVoice] = useState('ash')
 
   // WebRTC Audio Session Hook
   const {
@@ -29,35 +30,47 @@ export default function Home() {
         <div className="flex gap-2 items-center">
           <Badge>{status}</Badge>
         </div>
-        
-        <Button onClick={handleStartStopClick} intent={isSessionActive ? "danger" : "primary"}>
-          {isSessionActive ? "Stop" : "Start"} Session
+
+        <Button onClick={handleStartStopClick} intent={isSessionActive ? 'danger' : 'primary'}>
+          {isSessionActive ? 'Stop' : 'Start'}
+          {' '}
+          Session
         </Button>
 
         <div className="w-full border rounded-lg p-4 bg-slate-50">
           <h2 className="text-lg font-semibold mb-4">会話履歴</h2>
-          {conversation.length > 0 ? (
-            <div className="space-y-4">
-              {conversation.map((msg) => (
-                <div key={msg.id} className={`p-3 rounded-lg ${
-                  msg.role === 'user' ? 'bg-blue-100 ml-8' : 
-                  msg.role === 'assistant' ? 'bg-green-100 mr-8' : 'bg-gray-100'
-                }`}>
-                  <div className="font-medium mb-1">
-                    {msg.role === 'user' ? 'ユーザー' : 
-                     msg.role === 'assistant' ? 'アシスタント' : 'システム'}
-                    {msg.status && <span className="text-xs ml-2 text-gray-500">
-                      {msg.status === 'speaking' ? '（話し中）' :
-                       msg.status === 'processing' ? '（処理中）' : ''}
-                    </span>}
-                  </div>
-                  <div>{msg.text || "..."}</div>
+          {conversation.length > 0
+            ? (
+                <div className="space-y-4">
+                  {conversation.map(msg => (
+                    <div
+                      key={msg.id}
+                      className={`p-3 rounded-lg ${
+                        msg.role === 'user'
+                          ? 'bg-blue-100 ml-8'
+                          : msg.role === 'assistant' ? 'bg-green-100 mr-8' : 'bg-gray-100'
+                      }`}
+                    >
+                      <div className="font-medium mb-1">
+                        {msg.role === 'user'
+                          ? 'ユーザー'
+                          : msg.role === 'assistant' ? 'アシスタント' : 'システム'}
+                        {msg.status && (
+                          <span className="text-xs ml-2 text-gray-500">
+                            {msg.status === 'speaking'
+                              ? '（話し中）'
+                              : msg.status === 'processing' ? '（処理中）' : ''}
+                          </span>
+                        )}
+                      </div>
+                      <div>{msg.text || '...'}</div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500">会話が開始されるとここに表示されます。</p>
-          )}
+              )
+            : (
+                <p className="text-gray-500">会話が開始されるとここに表示されます。</p>
+              )}
         </div>
       </main>
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
@@ -108,5 +121,5 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  );
+  )
 }

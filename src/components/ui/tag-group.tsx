@@ -1,115 +1,115 @@
-"use client"
+'use client'
 
-import { createContext, use } from "react"
-
-import { badgeIntents, badgeShapes, badgeStyles } from "🍥/components/ui/badge"
-import { Description, Label } from "🍥/components/ui/field"
-import { composeTailwindRenderProps } from "🍥/lib/primitive"
-import { IconX } from "@intentui/icons"
 import type {
   TagGroupProps as TagGroupPrimitiveProps,
   TagListProps,
   TagProps as TagPrimitiveProps,
-} from "react-aria-components"
+} from 'react-aria-components'
+
+import { IconX } from '@intentui/icons'
+import { badgeIntents, badgeShapes, badgeStyles } from '🍥/components/ui/badge'
+import { Description, Label } from '🍥/components/ui/field'
+import { composeTailwindRenderProps } from '🍥/lib/primitive'
+import { createContext, use } from 'react'
 import {
   Button,
+  composeRenderProps,
   TagGroup as TagGroupPrimitive,
   TagList as TagListPrimitive,
   Tag as TagPrimitive,
-  composeRenderProps,
-} from "react-aria-components"
-import { twJoin, twMerge } from "tailwind-merge"
-import { tv } from "tailwind-variants"
+} from 'react-aria-components'
+import { twJoin, twMerge } from 'tailwind-merge'
+import { tv } from 'tailwind-variants'
 
 const intents = {
   primary: {
     base: [
       badgeIntents.primary,
-      "**:[[slot=remove]]:hover:bg-primary **:[[slot=remove]]:hover:text-primary-fg",
+      '**:[[slot=remove]]:hover:bg-primary **:[[slot=remove]]:hover:text-primary-fg',
     ],
     selected: [
-      "bg-primary dark:hover:bg-primary dark:bg-primary hover:bg-primary text-primary-fg dark:text-primary-fg hover:text-primary-fg",
-      "**:[[slot=remove]]:hover:bg-primary-fg/50 **:[[slot=remove]]:hover:text-primary",
+      'bg-primary dark:hover:bg-primary dark:bg-primary hover:bg-primary text-primary-fg dark:text-primary-fg hover:text-primary-fg',
+      '**:[[slot=remove]]:hover:bg-primary-fg/50 **:[[slot=remove]]:hover:text-primary',
     ],
   },
   secondary: {
     base: [
       badgeIntents.secondary,
-      "**:[[slot=remove]]:hover:bg-fg **:[[slot=remove]]:hover:text-bg",
+      '**:[[slot=remove]]:hover:bg-fg **:[[slot=remove]]:hover:text-bg',
     ],
     selected: [
-      "bg-fg text-bg dark:bg-fg/90 dark:text-secondary",
-      "**:[[slot=remove]]:hover:bg-secondary/30 **:[[slot=remove]]:hover:text-secondary",
+      'bg-fg text-bg dark:bg-fg/90 dark:text-secondary',
+      '**:[[slot=remove]]:hover:bg-secondary/30 **:[[slot=remove]]:hover:text-secondary',
     ],
   },
   success: {
     base: [
       badgeIntents.success,
-      "**:[[slot=remove]]:hover:bg-success **:[[slot=remove]]:hover:text-success-fg",
+      '**:[[slot=remove]]:hover:bg-success **:[[slot=remove]]:hover:text-success-fg',
     ],
     selected: [
-      "bg-success dark:bg-success dark:text-success-fg dark:hover:bg-success hover:bg-success text-success-fg hover:text-success-fg",
-      "**:[[slot=remove]]:hover:bg-success-fg/30 **:[[slot=remove]]:hover:text-success-fg",
+      'bg-success dark:bg-success dark:text-success-fg dark:hover:bg-success hover:bg-success text-success-fg hover:text-success-fg',
+      '**:[[slot=remove]]:hover:bg-success-fg/30 **:[[slot=remove]]:hover:text-success-fg',
     ],
   },
   warning: {
     base: [
       badgeIntents.warning,
-      "**:[[slot=remove]]:hover:bg-warning **:[[slot=remove]]:hover:text-warning-fg",
+      '**:[[slot=remove]]:hover:bg-warning **:[[slot=remove]]:hover:text-warning-fg',
     ],
     selected: [
-      "bg-warning dark:hover:bg-warning dark:bg-warning dark:text-bg hover:bg-warning text-warning-fg hover:text-warning-fg",
-      "**:[[slot=remove]]:hover:bg-warning-fg/30 **:[[slot=remove]]:hover:text-warning-fg",
+      'bg-warning dark:hover:bg-warning dark:bg-warning dark:text-bg hover:bg-warning text-warning-fg hover:text-warning-fg',
+      '**:[[slot=remove]]:hover:bg-warning-fg/30 **:[[slot=remove]]:hover:text-warning-fg',
     ],
   },
   danger: {
     base: [
       badgeIntents.danger,
-      "**:[[slot=remove]]:hover:bg-danger **:[[slot=remove]]:hover:text-danger-fg",
+      '**:[[slot=remove]]:hover:bg-danger **:[[slot=remove]]:hover:text-danger-fg',
     ],
     selected: [
-      "bg-danger dark:bg-danger dark:hover:bg-danger/90 hover:bg-danger text-danger-fg hover:text-danger-fg",
-      "**:[[slot=remove]]:hover:bg-danger-fg/30 **:[[slot=remove]]:hover:text-danger-fg",
+      'bg-danger dark:bg-danger dark:hover:bg-danger/90 hover:bg-danger text-danger-fg hover:text-danger-fg',
+      '**:[[slot=remove]]:hover:bg-danger-fg/30 **:[[slot=remove]]:hover:text-danger-fg',
     ],
   },
 }
 
-type RestrictedIntent = "primary" | "secondary"
+type RestrictedIntent = 'primary' | 'secondary'
 
-type Intent = "primary" | "secondary" | "warning" | "danger" | "success"
+type Intent = 'primary' | 'secondary' | 'warning' | 'danger' | 'success'
 
 type Shape = keyof typeof badgeShapes
 
-type TagGroupContextValue = {
+interface TagGroupContextValue {
   intent: Intent
   shape: Shape
 }
 
 const TagGroupContext = createContext<TagGroupContextValue>({
-  intent: "primary",
-  shape: "square",
+  intent: 'primary',
+  shape: 'square',
 })
 
 interface TagGroupProps extends TagGroupPrimitiveProps {
   intent?: Intent
-  shape?: "square" | "circle"
+  shape?: 'square' | 'circle'
   errorMessage?: string
   label?: string
   description?: string
   ref?: React.RefObject<HTMLDivElement>
 }
 
-const TagGroup = ({ children, ref, className, ...props }: TagGroupProps) => {
+function TagGroup({ children, ref, className, ...props }: TagGroupProps) {
   return (
     <TagGroupPrimitive
       ref={ref}
-      className={twMerge("flex flex-col flex-wrap", className)}
+      className={twMerge('flex flex-col flex-wrap', className)}
       {...props}
     >
       <TagGroupContext.Provider
         value={{
-          intent: props.intent || "primary",
-          shape: props.shape || "square",
+          intent: props.intent || 'primary',
+          shape: props.shape || 'square',
         }}
       >
         {props.label && <Label className="mb-1">{props.label}</Label>}
@@ -120,22 +120,22 @@ const TagGroup = ({ children, ref, className, ...props }: TagGroupProps) => {
   )
 }
 
-const TagList = <T extends object>({ className, ...props }: TagListProps<T>) => {
+function TagList<T extends object>({ className, ...props }: TagListProps<T>) {
   return (
     <TagListPrimitive
       {...props}
-      className={composeTailwindRenderProps(className, "flex flex-wrap gap-1.5")}
+      className={composeTailwindRenderProps(className, 'flex flex-wrap gap-1.5')}
     />
   )
 }
 
 const tagStyles = tv({
-  base: [badgeStyles.base, "outline-hidden"],
+  base: [badgeStyles.base, 'outline-hidden'],
   variants: {
-    isLink: { true: "cursor-pointer", false: "cursor-default" },
-    isFocusVisible: { true: "inset-ring inset-ring-current/10" },
-    isDisabled: { true: "opacity-50" },
-    allowsRemoving: { true: "pr-1" },
+    isLink: { true: 'cursor-pointer', false: 'cursor-default' },
+    isFocusVisible: { true: 'inset-ring inset-ring-current/10' },
+    isDisabled: { true: 'opacity-50' },
+    allowsRemoving: { true: 'pr-1' },
   },
 })
 
@@ -144,8 +144,8 @@ interface TagProps extends TagPrimitiveProps {
   shape?: Shape
 }
 
-const Tag = ({ className, intent, shape, ...props }: TagProps) => {
-  const textValue = typeof props.children === "string" ? props.children : undefined
+function Tag({ className, intent, shape, ...props }: TagProps) {
+  const textValue = typeof props.children === 'string' ? props.children : undefined
   const groupContext = use(TagGroupContext)
 
   return (
@@ -158,7 +158,7 @@ const Tag = ({ className, intent, shape, ...props }: TagProps) => {
 
         return tagStyles({
           ...renderProps,
-          isLink: "href" in props,
+          isLink: 'href' in props,
           className: twJoin([
             intents[finalIntent]?.base,
             badgeShapes[finalShape],
@@ -186,5 +186,5 @@ const Tag = ({ className, intent, shape, ...props }: TagProps) => {
   )
 }
 
-export type { TagGroupProps, TagProps, TagListProps, RestrictedIntent }
-export { Tag, TagList, TagGroup }
+export type { RestrictedIntent, TagGroupProps, TagListProps, TagProps }
+export { Tag, TagGroup, TagList }
